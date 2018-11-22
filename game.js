@@ -6,6 +6,19 @@ function InitGame() {
 
     console.log(positionInfo, width, height);
 
-    let app = new PIXI.Application({width: width, height: height});    
+    let app = new PIXI.Application({width: width, height: height});   
     container.appendChild(app.view);
+
+    window.app = app;
+}
+
+function reloadGame() {
+    if (window.container) {
+        window.container.destroy(true);
+        window.container = null;
+    }
+    let container = new PIXI.Container();
+    window.app.stage.addChild(container);
+
+    window.container = container;
 }

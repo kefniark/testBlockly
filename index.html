@@ -209,6 +209,57 @@
                     </value>
                 </block>
             </category>
+            <category name="List" colour="%{BKY_LISTS_HUE}">
+                <block type="lists_create_with">
+                    <mutation items="0"></mutation>
+                </block>
+                <block type="lists_create_with"></block>
+                <block type="lists_repeat">
+                    <value name="NUM">
+                    <shadow type="math_number">
+                        <field name="NUM">5</field>
+                    </shadow>
+                    </value>
+                </block>
+                <block type="lists_length"></block>
+                <block type="lists_isEmpty"></block>
+                <block type="lists_indexOf">
+                    <value name="VALUE">
+                    <block type="variables_get">
+                        <field name="VAR">{listVariable}</field>
+                    </block>
+                    </value>
+                </block>
+                <block type="lists_getIndex">
+                    <value name="VALUE">
+                    <block type="variables_get">
+                        <field name="VAR">{listVariable}</field>
+                    </block>
+                    </value>
+                </block>
+                <block type="lists_setIndex">
+                    <value name="LIST">
+                    <block type="variables_get">
+                        <field name="VAR">{listVariable}</field>
+                    </block>
+                    </value>
+                </block>
+                <block type="lists_getSublist">
+                    <value name="LIST">
+                    <block type="variables_get">
+                        <field name="VAR">{listVariable}</field>
+                    </block>
+                    </value>
+                </block>
+                <block type="lists_split">
+                    <value name="DELIM">
+                    <shadow type="text">
+                        <field name="TEXT">,</field>
+                    </shadow>
+                    </value>
+                </block>
+                <block type="lists_sort"></block>
+            </category>
             <category name="Text" colour="%{BKY_TEXTS_HUE}">
                 <block type="text"></block>
                 <block type="text_join"></block>
@@ -290,10 +341,21 @@
                 <block type="procedures_defnoreturn"></block>
                 <block type="procedures_defreturn"></block>
                 <block type="procedures_ifreturn"></block>
+                <block type="procedures_callnoreturn"></block>
             </category>
             <category name="Var">
                 <block type="variables_get"></block>
                 <block type="variables_set"></block>
+                <block type="sprite_get"></block>
+            </category>
+            <category name="Sprite">
+                <block type="createsprite"></block>
+                <block type="createtext"></block>
+                <block type="move"></block>
+            </category>
+            <category name="Game">
+                <block type="ongameevent"></block>
+                <block type="onkeyevent"></block>
             </category>
         </xml>
 
@@ -343,16 +405,19 @@
             }
 
             function runCode() {
+                reloadGame();
+
                 // Generate JavaScript code and run it.
                 window.LoopTrap = 1000;
                 Blockly.JavaScript.INFINITE_LOOP_TRAP =
                     'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
                 var code = Blockly.JavaScript.workspaceToCode(demoWorkspace);
                 Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+                console.log(code);
                 try {
                     eval(code);
                 } catch (e) {
-                    alert(e);
+                    console.error(e, e.stack);
                 }
             }
         </script>
